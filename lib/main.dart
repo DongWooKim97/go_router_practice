@@ -13,7 +13,7 @@ class _App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: router , // 기존에 선언한 라우터 값을 그대로 넣어준다.
+      routerConfig: router, // 기존에 선언한 라우터 값을 그대로 넣어준다.
     );
   }
 }

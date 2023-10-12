@@ -4,6 +4,7 @@ import 'package:go_router_practice/screen/2_named_screen.dart';
 import 'package:go_router_practice/screen/3_push_screen.dart';
 import 'package:go_router_practice/screen/4_pop_base_screen.dart';
 import 'package:go_router_practice/screen/5_pop_return_screen.dart';
+import 'package:go_router_practice/screen/6_path_param_screen.dart';
 import 'package:go_router_practice/screen/route_screen.dart';
 
 //GoRouter 선언 , routes => 리스트를 넣자
@@ -49,6 +50,20 @@ final router = GoRouter(
                 return PopReturnScreen();
               },
             )
+          ],
+        ),
+        GoRoute(
+          path: 'path_param/:id', // :을 지정하면, 이 뒤에 들어오는 값을 우리가 변수의 이름으로 칭하겠다는 의미
+          builder: (context, state) {
+            return PathParamScreen();
+          },
+          routes: [
+            GoRoute(
+              path: ':name',
+              builder: (context, state) {
+                return PathParamScreen();
+              },
+            ),
           ],
         ),
       ],

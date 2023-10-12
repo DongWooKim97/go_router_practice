@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:go_router_practice/screen/1_basic_screen.dart';
 import 'package:go_router_practice/screen/2_named_screen.dart';
+import 'package:go_router_practice/screen/3_push_screen.dart';
 import 'package:go_router_practice/screen/route_screen.dart';
 
 //GoRouter 선언 , routes => 리스트를 넣자
@@ -28,6 +29,12 @@ final router = GoRouter(
             return NamedScreen();
           }, // name 파라미터를 이용해서 라우터를 이동할 수 있다 .url이 길어졌을 때 (= url을 찾기 힘들어졌을때!)유용!
         ),
+        GoRoute(
+          path: 'push',
+          builder: (context, builder) {
+            return PushScreen();
+          }, // name 파라미터를 이용해서 라우터를 이동할 수 있다 .url이 길어졌을 때 (= url을 찾기 힘들어졌을때!)유용!
+        ),
       ],
     ),
   ],
@@ -36,3 +43,4 @@ final router = GoRouter(
 // / -> home
 // /basic -> basic screen
 // /named
+// /push

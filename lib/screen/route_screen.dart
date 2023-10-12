@@ -24,10 +24,15 @@ class RootScreen extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-            context.go('/push');
-
+              context.go('/push');
             },
             child: Text('Go Push!'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              context.go('/pop');
+            },
+            child: Text('Go Pop!'),
           ),
         ],
       ),

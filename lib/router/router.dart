@@ -5,6 +5,7 @@ import 'package:go_router_practice/screen/3_push_screen.dart';
 import 'package:go_router_practice/screen/4_pop_base_screen.dart';
 import 'package:go_router_practice/screen/5_pop_return_screen.dart';
 import 'package:go_router_practice/screen/6_path_param_screen.dart';
+import 'package:go_router_practice/screen/7_query_parameter_screen.dart';
 import 'package:go_router_practice/screen/route_screen.dart';
 
 //GoRouter 선언 , routes => 리스트를 넣자
@@ -65,6 +66,12 @@ final router = GoRouter(
               },
             ),
           ],
+        ),
+        GoRoute(
+          path: 'query_param',
+          builder: (context, state) {
+            return QueryParameterScreen();
+          },
         ),
       ],
     ),

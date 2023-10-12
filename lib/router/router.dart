@@ -6,6 +6,8 @@ import 'package:go_router_practice/screen/4_pop_base_screen.dart';
 import 'package:go_router_practice/screen/5_pop_return_screen.dart';
 import 'package:go_router_practice/screen/6_path_param_screen.dart';
 import 'package:go_router_practice/screen/7_query_parameter_screen.dart';
+import 'package:go_router_practice/screen/8_nested_screen.dart';
+import 'package:go_router_practice/screen/9_nested_child_screen.dart';
 import 'package:go_router_practice/screen/route_screen.dart';
 
 //GoRouter 선언 , routes => 리스트를 넣자
@@ -72,6 +74,21 @@ final router = GoRouter(
           builder: (context, state) {
             return QueryParameterScreen();
           },
+        ),
+        ShellRoute( // ShellRoute로 감쌌지만 path가 없기 때문에, /nested/a로 해석된다. 하위의 routes들의 값들로 path가 지정된다.
+          builder: (context, state, child) {
+            // ShellRoute 하위에 GoRoute들을 쓸건데, GoRoute들은 각각 빌더를 갖고있다. 빌더에서 반환해주는 값을 CHild에서 또 입력을 다시 받게된다.
+            // 그 말은 즉슨,
+            return NestedScreen(child: child);
+          }, // 하위에 입력할 모든 위젯을 감싸게 되는 Widget을 입력할 수 있다.
+          routes: [
+            GoRoute(
+                path: 'nested/a', builder: (_, state) => NestedChildScreen(routeName: '/nested/a')),
+            GoRoute(
+                path: 'nested/b', builder: (_, state) => NestedChildScreen(routeName: '/nested/b')),
+            GoRoute(
+                path: 'nested/c', builder: (_, state) => NestedChildScreen(routeName: '/nested/c'))
+          ],
         ),
       ],
     ),

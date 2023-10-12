@@ -6,13 +6,31 @@ import 'package:go_router_practice/screen/4_pop_base_screen.dart';
 import 'package:go_router_practice/screen/5_pop_return_screen.dart';
 import 'package:go_router_practice/screen/6_path_param_screen.dart';
 import 'package:go_router_practice/screen/7_query_parameter_screen.dart';
+import 'package:go_router_practice/screen/8_nested_child_screen.dart';
 import 'package:go_router_practice/screen/8_nested_screen.dart';
-import 'package:go_router_practice/screen/9_nested_child_screen.dart';
-import 'package:go_router_practice/screen/route_screen.dart';
+import 'package:go_router_practice/screen/9_login_screen.dart';
+import 'package:go_router_practice/screen/9_private_screen.dart';
+import 'package:go_router_practice/screen/root_screen.dart';
+
+// 로그인이 됐는지 안됐는지, true - OK / false - NO!
+bool authState = false;
 
 //GoRouter 선언 , routes => 리스트를 넣자
 // https://blog.codefactory.ai -> /하는거랑 같다. 도메인은 무시한다고 하면!!.  -> path
 final router = GoRouter(
+  // 여기서 state는 GoRoute의 state와 동일하다.
+  redirect: (context, state) {
+    // return String -> 해당 라우트로 이동한다(path)
+    // return null -> 원래 이동하려던 라우트로 이동한다. !!
+    print(state.location);
+    print('상위 redirect');
+
+    if (state.location == '/login/private' && !authState) {
+      return '/login';
+    }
+    return null; // 로그인 상황만 고려해봤을 때, 원래 가려던 url은 /login/private 인데, authState가 false일때는 못가니까 login으로 가고, if문을 통과하게 되면
+  },
+
   routes: [
     GoRoute(
       //라우터 등록
@@ -63,7 +81,7 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: ':name',
-              builder: (context, state) {
+builder: (context, state) {
                 return PathParamScreen();
               },
             ),
@@ -75,7 +93,8 @@ final router = GoRouter(
             return QueryParameterScreen();
           },
         ),
-        ShellRoute( // ShellRoute로 감쌌지만 path가 없기 때문에, /nested/a로 해석된다. 하위의 routes들의 값들로 path가 지정된다.
+        ShellRoute(
+          // ShellRoute로 감쌌지만 path가 없기 때문에, /nested/a로 해석된다. 하위의 routes들의 값들로 path가 지정된다.
           builder: (context, state, child) {
             // ShellRoute 하위에 GoRoute들을 쓸건데, GoRoute들은 각각 빌더를 갖고있다. 빌더에서 반환해주는 값을 CHild에서 또 입력을 다시 받게된다.
             // 그 말은 즉슨,
@@ -90,12 +109,36 @@ final router = GoRouter(
                 path: 'nested/c', builder: (_, state) => NestedChildScreen(routeName: '/nested/c'))
           ],
         ),
+        GoRoute(
+          path: 'login',
+          builder: (_, state) => LoginScreen(),
+          routes: [
+            GoRoute(
+              path: 'private',
+              builder: (_, state) => PrivateScreen(),
+            ),
+          ],
+        ),
+        GoRoute(
+          path: 'login2',
+          builder: (_, state) => LoginScreen(),
+          routes: [
+            GoRoute(
+              path: 'private',
+              builder: (_, state) => PrivateScreen(),
+              // GoRoute속 routes안에 있는 하위 GoRoute에서 redirect를 사용하는 경우 , 룰은 똑같이 적용되는데, redirect를 작성하고 라우트에 이동할려고 할때만 적용된다.
+              redirect: (context, state) {
+                print(state.location);
+                print('하위 redirect');
+                if(!authState) {
+                  return '/login2';
+                }
+                return null;
+              },
+            ),
+          ],
+        )
       ],
     ),
   ],
 );
-
-// / -> home
-// /basic -> basic screen
-// /named
-// /push

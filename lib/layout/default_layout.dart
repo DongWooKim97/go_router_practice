@@ -20,4 +20,3 @@ class DefaultLayout extends StatelessWidget {
     );
   }
 }
-

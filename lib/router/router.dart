@@ -170,6 +170,8 @@ final router = GoRouter(
       ],
     ),
   ],
-  errorBuilder: (context, state) => ErrorScreen(error: state.error.toString()),
   // 여기서 state는 Widget들에서 사용한 GoRouterState Class이다.
+  errorBuilder: (context, state) => ErrorScreen(error: state.error.toString()),
+  // debugLogDiagnostics 기본값은 false이다.
+  debugLogDiagnostics: true,
 );

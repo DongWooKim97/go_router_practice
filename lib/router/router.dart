@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:go_router_practice/screen/10_transition_screen_1.dart';
+import 'package:go_router_practice/screen/10_transition_screen_2.dart';
 import 'package:go_router_practice/screen/1_basic_screen.dart';
 import 'package:go_router_practice/screen/2_named_screen.dart';
 import 'package:go_router_practice/screen/3_push_screen.dart';
@@ -81,7 +84,7 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: ':name',
-builder: (context, state) {
+              builder: (context, state) {
                 return PathParamScreen();
               },
             ),
@@ -130,14 +133,39 @@ builder: (context, state) {
               redirect: (context, state) {
                 print(state.location);
                 print('하위 redirect');
-                if(!authState) {
+                if (!authState) {
                   return '/login2';
                 }
                 return null;
               },
             ),
           ],
-        )
+        ),
+        GoRoute(
+          path: 'transition',
+          builder: (_, state) => TransitionScreenOne(),
+          routes: [
+            GoRoute(
+              path: 'detail',
+              // 디테일에서만 (일반)빌더 삭제
+              pageBuilder: (_, state) => CustomTransitionPage(
+                transitionDuration: Duration(seconds: 3),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  // 애니메이션이 어떻게 동작하고, 무엇을 동작하는지 따로 공부!!
+                  //transitionBuilder의 child는 아래에 있는 child(TransitionScreenTwo)에 입력된 값을 이 파라미터로 다시 입력받는 child.
+                  // 위에서 봤던 child와 동일.
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                  // 여기서 animation값은 0에서 1로 점점 늘어난다. 즉, 화면이 전환될 때 순간이 0이고 완전히 보여줬을 떄가 1인데, 0에서 1로 천천히 밝아지는것.
+                  // secondary는 거꾸로다. 1에서 0으로. go to 는 0에서 1로. pop은 반대로 1에서 0으로.
+                },
+                child: TransionScreenTwo(), // child = 이동하려는 페이지를 넣자
+              ),
+            ),
+          ],
+        ),
       ],
     ),
   ],
